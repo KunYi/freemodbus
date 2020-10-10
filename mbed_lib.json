@@ -1,0 +1,17 @@
+{
+    "name": "freemodbus",
+    "config": {
+        "MODBUS_TX": "PC_12",
+        "MODBUS_RX": "PC_13",
+        "MODBUS_DIR": "",
+        "MODBUS_BAUDRATE": 19200,
+        "MODBUS_PORT": 6200
+    },
+    "target_overrides": {
+        "NUMAKER_PFM_NUC472" : {
+            "MODBUS_TX": "PF_13",
+            "MODBUS_RX": "PF_14",
+            "MODBUS_DIR": "PF_11"
+        }
+    }
+}
