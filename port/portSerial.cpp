@@ -15,6 +15,8 @@ BOOL    xMBPortSerialInit( UCHAR ucPort, ULONG ulBaudRate,
 {
     (void)ucPort;
     mbed::SerialBase::Parity  parity;
+    int stopbit = 1;
+
     switch (eParity) {
     case MB_PAR_ODD:
         parity = mbed::SerialBase::Odd;
@@ -25,13 +27,14 @@ BOOL    xMBPortSerialInit( UCHAR ucPort, ULONG ulBaudRate,
     case MB_PAR_NONE:
     default:
         parity = mbed::SerialBase::None;
+        stopbit = 2;
     }
 
     modbus_uart.baud(ulBaudRate);
     modbus_uart.format(
         /* bits */      ucDataBits,
         /* parity */    parity,
-        /* stop bit */  1);
+        /* stop bit */  stopbit);
 
     modbus_uart.attach(on_rx, mbed::SerialBase::RxIrq);
     modbus_uart.attach(on_tx_empty, mbed::SerialBase::TxIrq);
