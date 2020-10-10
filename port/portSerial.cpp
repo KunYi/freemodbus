@@ -9,6 +9,9 @@ static UnbufferedSerial modbus_uart(
 
 static void on_rx(void);
 static void on_tx_empty(void);
+#if (MBED_CONF_FREEMODBUS_MODBUS_DIR != NULL)
+static DigitalOut rs485_txe = MBED_CONF_FREEMODBUS_MODBUS_DIR;
+#endif
 
 BOOL    xMBPortSerialInit( UCHAR ucPort, ULONG ulBaudRate,
                             UCHAR ucDataBits, eMBParity eParity )
@@ -35,7 +38,9 @@ BOOL    xMBPortSerialInit( UCHAR ucPort, ULONG ulBaudRate,
         /* bits */      ucDataBits,
         /* parity */    parity,
         /* stop bit */  stopbit);
-
+#if (MBED_CONF_FREEMODBUS_MODBUS_DIR != NULL)
+    rs485_txe.write(0);
+#endif
     modbus_uart.attach(on_rx, mbed::SerialBase::RxIrq);
     modbus_uart.attach(on_tx_empty, mbed::SerialBase::TxIrq);
     return TRUE;
@@ -60,6 +65,10 @@ void    vMBPortSerialEnable( BOOL xRxEnable, BOOL xTxEnable )
 {
     bool bRx = (xRxEnable == TRUE);
     bool bTx = (xTxEnable == TRUE);
+
+#if (MBED_CONF_FREEMODBUS_MODBUS_DIR != NULL)
+    rs485_txe.write((xTxEnable == TRUE) ? 1 : 0);
+#endif
 
     if (bRx)
         modbus_uart.attach(on_rx, mbed::SerialBase::RxIrq);

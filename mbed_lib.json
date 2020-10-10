@@ -3,7 +3,7 @@
     "config": {
         "MODBUS_TX": "PC_12",
         "MODBUS_RX": "PC_13",
-        "MODBUS_DIR": "",
+        "MODBUS_DIR": "NULL",
         "MODBUS_BAUDRATE": 19200,
         "MODBUS_PORT": 6200
     },
